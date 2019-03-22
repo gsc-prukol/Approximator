@@ -8,6 +8,7 @@ public class CreatePoints : MonoBehaviour
     // Start is called before the first frame update
     public GameObject point;
     public GameObject[] pointsArray;
+    public GameObject lagrange;
     void Start()
     {
         
@@ -30,6 +31,10 @@ public class CreatePoints : MonoBehaviour
                     pointsArray[i-1] = Instantiate(point);
                 }
                 pointsArray[i-1].transform.position = pz;
+                Lagrange l = lagrange.GetComponent<Lagrange>();
+                l.y[i - 1] = pz.y;
+                l.DrawLine();
+
             }
             else
             {
