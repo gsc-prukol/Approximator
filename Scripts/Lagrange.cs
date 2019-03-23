@@ -26,12 +26,12 @@ public class Lagrange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        DrawLine();
     }
     public void DrawLine()
     {
         float x;
-        Debug.Log("DrawLine()");
+       // Debug.Log("DrawLine()");
         calculationCoefficients();
         LineRenderer lr = gameObject.GetComponent<LineRenderer>();
          for(int i = 0; i < poinsDetalizations; i++)
@@ -39,7 +39,7 @@ public class Lagrange : MonoBehaviour
              x =  i / 10f ;
              lr.SetPosition(i, new Vector3(2 * x, meaningPolynomial(x)));
          }
-        Debug.Log("2, " + meaningPolynomial(2f));
+       // Debug.Log("2, " + meaningPolynomial(2f));
     }
     float meaningPolynomial(float x)
     {
@@ -61,8 +61,8 @@ public class Lagrange : MonoBehaviour
                 r[i] += a[j, i] * y[j];
             }
         }
-        Debug.Log("R:" + r[0] + ", " + r[1] + ", " + r[2] + ", " + r[3] + ", " + r[4] + "; ");
-        Debug.Log("Y:" + y[0] + ", " + y[1] + ", " + y[2] + ", " + y[3] + ", " + y[4] + "; ");
+       // Debug.Log("R:" + r[0] + ", " + r[1] + ", " + r[2] + ", " + r[3] + ", " + r[4] + "; ");
+       // Debug.Log("Y:" + y[0] + ", " + y[1] + ", " + y[2] + ", " + y[3] + ", " + y[4] + "; ");
     }
     void calculationCoefficientsA()
     {
@@ -98,7 +98,7 @@ public class Lagrange : MonoBehaviour
             a[row, 1] -= args[i];
             a[row, 4] *= args[i];
         }
-        Debug.Log("Row" + row + ": (" + a[row, 0] + ", " + a[row, 1] + ", " + a[row, 2] + ", " + a[row, 3] + ", " + a[row, 4] + ")");
+       // Debug.Log("Row" + row + ": (" + a[row, 0] + ", " + a[row, 1] + ", " + a[row, 2] + ", " + a[row, 3] + ", " + a[row, 4] + ")");
     }
     void calcukationDenominators()
     {
