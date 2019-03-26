@@ -36,7 +36,7 @@ public class MNK : MonoBehaviour
         for (int i = 0; i < poinsDetalizations; i++)
         {
             x = i / 10f;
-            lr.SetPosition(i, new Vector3(2 * x, meaningPolynomial(x)));
+            lr.SetPosition(i, new Vector3(2 * x, meaningPolynomial(x), 1f));
         }
         Debug.Log("2, " + meaningPolynomial(2f));
     }
