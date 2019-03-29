@@ -5,6 +5,7 @@ using UnityEngine;
 public class Lagrange : MonoBehaviour
 {
     public int length = 5; // кількість точок з заданими значеннями
+    public float[] x;
     public float[] y; //у[i] це значення функції в точці і + 1
     private float[,] a; // коефіцієнти поліномів
     private float[] b; // вектор знаменнників
@@ -26,7 +27,7 @@ public class Lagrange : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DrawLine();
+
     }
     public void DrawLine()
     {
@@ -102,14 +103,14 @@ public class Lagrange : MonoBehaviour
     }
     void calcukationDenominators()
     {
-        for (int i = 1; i <= length; i++)
+        for (int i = 0; i < x.Length; i++)
         {
             b[i - 1] = 1f;
-            for (int j = 1; j <= length; j++)
+            for (int j = 0; j < x.Length; j++)
             {
                 if (i != j)
                 {
-                    b[i - 1] *= i - j;
+                    b[i - 1] *= x[i] - x[j];
                 }
             }
         }
