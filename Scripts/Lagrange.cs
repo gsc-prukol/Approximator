@@ -105,12 +105,12 @@ public class Lagrange : MonoBehaviour
     {
         for (int i = 0; i < x.Length; i++)
         {
-            b[i - 1] = 1f;
+            b[i] = 1f;
             for (int j = 0; j < x.Length; j++)
             {
                 if (i != j)
                 {
-                    b[i - 1] *= x[i] - x[j];
+                    b[i] *= x[i] - x[j];
                 }
             }
         }

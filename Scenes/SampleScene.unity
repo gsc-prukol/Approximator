@@ -374,6 +374,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   length: 5
+  x:
+  - 1
+  - 2
+  - 3
+  - 4
+  - 5
   y: []
   poinsDetalizations: 120
 --- !u!120 &519963692
