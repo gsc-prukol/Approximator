@@ -9,12 +9,14 @@ public class Lagrange : MonoBehaviour
     private float[] b; // вектор знаменнників
     private float[] r; // ковектор коефіцієнтів результуючого поліному
     public int poinsDetalizations = 120; //кількість точок лінії при зображенні лінії
+    private float pointsDelta; // відстань між точками
     void Awake()
     {
         b = new float[x.Length];
         a = new float[x.Length, x.Length];
         y = new float[x.Length];
         r = new float[x.Length];
+        pointsDelta = 6f / poinsDetalizations;
     }
     // Start is called before the first frame update
     void Start()
@@ -35,7 +37,7 @@ public class Lagrange : MonoBehaviour
         LineRenderer lr = gameObject.GetComponent<LineRenderer>();
          for(int i = 0; i < poinsDetalizations; i++)
          {
-             x =  i / 10f ;
+             x =  i * pointsDelta;
              lr.SetPosition(i, new Vector3(2 * x, meaningPolynomial(x)));
          }
        // Debug.Log("2, " + meaningPolynomial(2f));
@@ -77,7 +79,7 @@ public class Lagrange : MonoBehaviour
         for (int i = x.Length - 1; i >= 0; i--)
         {
             if (i != x.Length - 1)
-                args[i]++;
+                args[i] = x[i + 1];              
             calculationCoefficientsRow(i, args);
             for (int j = 0; j < x.Length; j ++)
             {
