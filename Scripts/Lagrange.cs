@@ -1,10 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Lagrange : MonoBehaviour
 {
-    public int length = 5; // кількість точок з заданими значеннями
+   // public int length = 5; // кількість точок з заданими значеннями
     public float[] x;
     public float[] y; //у[i] це значення функції в точці і + 1
     private float[,] a; // коефіцієнти поліномів
@@ -13,10 +11,10 @@ public class Lagrange : MonoBehaviour
     public int poinsDetalizations = 120; //кількість точок лінії при зображенні лінії
     void Awake()
     {
-        b = new float[length];
-        a = new float[length, length];
-        y = new float[length];
-        r = new float[length];
+        b = new float[x.Length];
+        a = new float[x.Length, x.Length];
+        y = new float[x.Length];
+        r = new float[x.Length];
     }
     // Start is called before the first frame update
     void Start()
@@ -42,22 +40,24 @@ public class Lagrange : MonoBehaviour
          }
        // Debug.Log("2, " + meaningPolynomial(2f));
     }
-    float meaningPolynomial(float x)
+    float meaningPolynomial(float input)
     {
-        float res = 0;
-        for (int i = 0; i < length; i++)
+        float res = r[r.Length - 1];
+        float tmp = input * r[0];
+        for (int i = 1; i < r.Length - 1; i++)
         {
-            res += Mathf.Pow(x, i) * r[length - i - 1];
+            tmp += r[i];
+            tmp *= input;
         }
-
+        res += tmp;
         return res;
     }
     void calculationCoefficients()
     {
-        for (int i = 0; i < length; i++)
+        for (int i = 0; i < r.Length; i++)
         {
             r[i] = 0;
-            for (int j = 0; j < length; j++)
+            for (int j = 0; j < r.Length; j++)
             {
                 r[i] += a[j, i] * y[j];
             }
@@ -67,18 +67,19 @@ public class Lagrange : MonoBehaviour
     }
     void calculationCoefficientsA()
     {
-        float[] args = new float[length - 1];
-        calcukationDenominators();
-        for (int i = 0; i < length - 1; i++)
+        float[] args = new float[x.Length - 1];
+  
+        calculationDenominators();
+        for (int i = 0; i < args.Length; i++)
         {
-            args[i] = i + 1;
+            args[i] = x[i];
         }
-        for (int i = length - 1; i >= 0; i--)
+        for (int i = x.Length - 1; i >= 0; i--)
         {
-            if (i != length - 1)
+            if (i != x.Length - 1)
                 args[i]++;
             calculationCoefficientsRow(i, args);
-            for (int j = 0; j < length; j ++)
+            for (int j = 0; j < x.Length; j ++)
             {
                 a[i, j] /= b[i];
             }
@@ -87,21 +88,29 @@ public class Lagrange : MonoBehaviour
     }
     void calculationCoefficientsRow(int row, float[] args)
     {
-        a[row, 0] = 1f;
-        a[row, 1] = 0;
-        a[row, 2] = (args[0] + args[1]) *(args[2] + args[3]) + args[0] * args[1] + args[2] * args[3];
-        a[row, 3] = (args[0] + args[1]) * args[2] * args[3] + (args[2] + args[3]) * args[0] * args[1];
-        a[row, 3] *= -1;
-        a[row, 4] = 1;
-
-        for (int i = 0; i < args.Length; i++)
+        float[] tmp = { 1f, -args[0] };
+        for (int i = 1; i < args.Length; i++)
         {
-            a[row, 1] -= args[i];
-            a[row, 4] *= args[i];
+            tmp = amountPolynom(tmp, args[i]);
         }
-       // Debug.Log("Row" + row + ": (" + a[row, 0] + ", " + a[row, 1] + ", " + a[row, 2] + ", " + a[row, 3] + ", " + a[row, 4] + ")");
+        for(int i = 0; i < a.GetLength(1); i++) // 1 вимір - кількість стовпців
+        {
+            Debug.Log(tmp[i]);
+            a[row, i] = tmp[i];
+        }
+        // Debug.Log("Row" + row + ": (" + a[row, 0] + ", " + a[row, 1] + ", " + a[row, 2] + ", " + a[row, 3] + ", " + a[row, 4] + ")");
     }
-    void calcukationDenominators()
+
+    public float[] amountPolynom(float[] polynom, float ai)
+    {
+        float[] coeffs = new float[polynom.Length + 1];
+        float[] polynom2 = { 1f, -ai };
+        for (int i = 0; i < polynom.Length; ++i)
+            for (int j = 0; j < 2; ++j) // множимо на поліном вигляду х - аі
+                coeffs[i + j] += polynom[i] * polynom2[j];
+        return coeffs;
+    }
+    void calculationDenominators()
     {
         for (int i = 0; i < x.Length; i++)
         {
